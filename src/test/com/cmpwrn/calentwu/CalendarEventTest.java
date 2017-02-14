@@ -1,0 +1,76 @@
+package com.cmpwrn.calentwu;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+import java.time.LocalTime;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+public class CalendarEventTest {
+
+    @Test @Ignore("TODO")
+    public void testValidityOfCalendarEventShouldHaveEqualStartEndDuration() {
+        CalendarEvent calendarEvent = new CalendarEventBuilder()
+                .withStartTime(LocalTime.of(9, 0))
+                .withEndTime(LocalTime.of(10, 30))
+                .withDuration(90)
+                .build();
+        assertThat(calendarEvent.validityCheck().isValid(), is(true));
+        assertThat(calendarEvent.validityCheck().getErrors().size(), is(0));
+    }
+
+    @Test
+    public void shouldParseCalendarEventFromText() {
+        String csv = "Feedback 101,9:00,90,10:30,dev/QA,Dev|Types of Testing,Linda|Anika,https://example.com";
+        CalendarEvent calendarEvent = new CalendarEvent(csv);
+        CalendarEvent expected = new CalendarEventBuilder()
+                .withStartTime(LocalTime.of(9, 0))
+                .withEndTime(LocalTime.of(10, 30))
+                .withBodyText("foo")
+                .withSessionType(SessionType.QA, SessionType.Dev)
+                .withPresenters("Linda", "Anika")
+                .build();
+
+        assertThat(calendarEvent, is(expected));
+    }
+
+    @Test
+    public void shouldGiveCsvReadyToString() {
+        CalendarEvent calendarEvent = new CalendarEventBuilder()
+                .withSessionName("Feedback 101")
+                .withStartTime(LocalTime.of(9, 0))
+                .withEndTime(LocalTime.of(10, 30))
+                .withBodyText("calendar body text")
+                .withSessionType(SessionType.QA, SessionType.Dev)
+                .withDependsOn(new CalendarEventBuilder().withSessionName("Welcome to TWU").build())
+                .withPresenters("Linda", "Anika")
+                .build();
+
+        assertThat(calendarEvent.toString(), is("Feedback 101,09:00,90,10:30,QA|Dev,Welcome to TWU,Linda|Anika,calendar body text"));
+    }
+
+    @Test
+    public void shouldGoFullCircleParseToImport() {
+        CalendarEvent calendarEvent1 = new CalendarEventBuilder()
+                .withSessionName("Feedback 101")
+                .withStartTime(LocalTime.of(9, 0))
+                .withEndTime(LocalTime.of(10, 30))
+                .withBodyText("calendar body text")
+                .withSessionType(SessionType.QA, SessionType.Dev)
+                .withDependsOn(new CalendarEventBuilder().withSessionName("Welcome to TWU").build())
+                .withPresenters("Linda", "Anika")
+                .build();
+
+        String csv1 = calendarEvent1.toString();
+        CalendarEvent calendarEvent2 = new CalendarEvent(csv1);
+        assertThat(calendarEvent2, is(calendarEvent1));
+        assertThat(calendarEvent2.toString(), is(calendarEvent1.toString()));
+    }
+
+    public void shouldParseCalendarEventFromTextAndReturnErrorsIfAny() {
+
+    }
+
+}

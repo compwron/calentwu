@@ -8,9 +8,11 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        System.out.println("hi!");
         String config = config(args);
-        String calendarCsv = new CalendarGenerator().generate(config);
+//        the config is the CSV that goes into the scheduler
+        String calendarCsv = new CalendarGenerator(config).generate();
+
+//        the calendarCsv is the CSV that gets loaded into google (similar but different, and ideally interchangeable)
         System.out.println(calendarCsv);
     }
 

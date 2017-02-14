@@ -1,7 +1,13 @@
 package com.cmpwrn.calentwu;
 
 public class CalendarGenerator {
-    public String generate(String config) {
+    private String config;
+
+    public CalendarGenerator(String config) {
+        this.config = config;
+    }
+
+    public String generate(CalendarEvent... calendarEvents) {
         return config;
     }
 }
