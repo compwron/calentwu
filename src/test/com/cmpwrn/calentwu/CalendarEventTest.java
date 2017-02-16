@@ -33,7 +33,7 @@ public class CalendarEventTest {
                 .withPresenters("Linda", "Anika")
                 .build();
 
-        assertThat(calendarEvent, is(expected));
+        assertThat(calendarEvent.toString(), is(expected.toString()));
     }
 
     @Test

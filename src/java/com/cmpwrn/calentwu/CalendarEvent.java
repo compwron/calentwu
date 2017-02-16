@@ -1,6 +1,9 @@
 package com.cmpwrn.calentwu;
 
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,7 +40,7 @@ public class CalendarEvent {
         this.sessionName = chunks[0];
         this.startTime = startTimeFrom(chunks[1]);
         this.minutesDuration = Integer.parseInt(chunks[2]);
-        this.endTime = startTime.isPresent() ? Optional.empty() : Optional.of(startTime.get().plus(minutesDuration, MINUTES));
+        this.endTime = startTime.isPresent() ? Optional.of(startTime.get().plus(minutesDuration, MINUTES)) : Optional.empty();
         this.sessionTypes = sessionTypesFrom(chunks[4]);
         this.dependsOn = dependsOnFrom(chunks[5]);
         this.presenters = presentersFrom(chunks[6]);
@@ -45,20 +48,20 @@ public class CalendarEvent {
     }
 
     private List<Presenter> presentersFrom(String chunk) {
-        return null;
+        return new ArrayList<>();
     }
 
     private List<CalendarEvent> dependsOnFrom(String chunk) {
-        return null;
+        return new ArrayList<>();
     }
 
     private List<SessionType> sessionTypesFrom(String chunk) {
-        return null;
+        return Arrays.stream(chunk.split("|")).map(i -> SessionType.from(i)).collect(Collectors.toList());
     }
 
     private Optional<LocalTime> startTimeFrom(String chunk) {
         if (chunk != null) {
-            return Optional.of(LocalTime.parse(chunk));
+            return Optional.of(LocalTime.parse(chunk, DateTimeFormatter.ofPattern("k:mm")));
         }
         return Optional.empty();
     }
