@@ -53,7 +53,7 @@ public class CalendarEventTest {
                 .withPresenters("Linda", "Anika")
                 .build();
 
-        assertThat(calendarEvent.toString(), is("Feedback 101,09:00,90,10:30,QA|Dev,Welcome to TWU,Linda|Anika,calendar body text"));
+        assertThat(calendarEvent.toString(), is("Feedback 101,09:00,90,10:30,Dev|QA,Welcome to TWU,Linda|Anika,calendar body text"));
     }
 
     @Test
