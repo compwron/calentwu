@@ -12,7 +12,7 @@ public class CalendarEventBuilder {
     private List<CalendarEvent> dependsOn = new ArrayList<>();
     private List<Presenter> presenters = new ArrayList<>();
     private LocalTime endTime = LocalTime.now();
-    private String sessionName = "Caval";
+    private String sessionName = "NOT SET";
 
     CalendarEvent build() {
         return new CalendarEvent(sessionName, startTime, endTime, minutesDuration, bodyText, sessionTypes, dependsOn, presenters);

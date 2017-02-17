@@ -23,17 +23,22 @@ public class CalendarEventTest {
 
     @Test
     public void shouldParseCalendarEventFromText() {
-        String csv = "Feedback 101,9:00,90,10:30,dev/QA,Dev|Types of Testing,Linda|Anika,https://example.com";
+        String csv = "Feedback 101,09:00,90,10:30,Dev|QA,Mars Rover Dojo|Types of Testing,Linda|Anika,https://example.com";
         CalendarEvent calendarEvent = new CalendarEvent(csv);
         CalendarEvent expected = new CalendarEventBuilder()
+                .withSessionName("Feedback 101")
                 .withStartTime(LocalTime.of(9, 0))
+                .withDuration(90)
                 .withEndTime(LocalTime.of(10, 30))
-                .withBodyText("foo")
+                .withBodyText("https://example.com")
                 .withSessionType(SessionType.QA, SessionType.Dev)
+                .withDependsOn(new CalendarEventBuilder().withSessionName("Mars Rover Dojo").build())
+                .withDependsOn(new CalendarEventBuilder().withSessionName("Types of Testing").build())
                 .withPresenters("Linda", "Anika")
                 .build();
 
         assertThat(calendarEvent.toString(), is(expected.toString()));
+        assertThat(calendarEvent.toString(), is(csv));
     }
 
     @Test

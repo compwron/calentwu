@@ -2,11 +2,12 @@ package com.cmpwrn.calentwu;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
 
@@ -29,7 +30,7 @@ public class CalendarEvent {
         this.endTime = Optional.of(endTime);
         this.minutesDuration = minutesDuration;
         this.bodyText = bodyText;
-        this.sessionTypes = sessionTypes;
+        this.sessionTypes = sortSessionTypes(sessionTypes.stream());
         this.dependsOn = dependsOn;
         this.presenters = presenters;
     }
@@ -48,15 +49,26 @@ public class CalendarEvent {
     }
 
     private List<Presenter> presentersFrom(String chunk) {
-        return new ArrayList<>();
+        return Arrays.stream(splitPipeSeparatedChunk(chunk)).map(name -> new Presenter(name)).collect(Collectors.toList());
     }
 
-    private List<CalendarEvent> dependsOnFrom(String chunk) {
-        return new ArrayList<>();
+    private List<CalendarEvent> dependsOnFrom(String sessionName) {
+        return Arrays.asList(new CalendarEventBuilder().withSessionName(sessionName).build());
     }
 
     private List<SessionType> sessionTypesFrom(String chunk) {
-        return Arrays.stream(chunk.split("|")).map(i -> SessionType.from(i)).collect(Collectors.toList());
+        return sortSessionTypes(Arrays.stream(splitPipeSeparatedChunk(chunk))
+                .map(SessionType::from));
+    }
+
+    private List<SessionType> sortSessionTypes(Stream<SessionType> sessionTypeStream) {
+        return sessionTypeStream
+                    .sorted(Comparator.comparing(Enum::toString))
+                    .collect(Collectors.toList());
+    }
+
+    private String[] splitPipeSeparatedChunk(String chunk) {
+        return chunk.split("//|\\|");
     }
 
     private Optional<LocalTime> startTimeFrom(String chunk) {
