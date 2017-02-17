@@ -70,7 +70,6 @@ public class CalendarEventTest {
 
         String csv1 = calendarEvent1.toString();
         CalendarEvent calendarEvent2 = new CalendarEvent(csv1);
-        assertThat(calendarEvent2, is(calendarEvent1));
         assertThat(calendarEvent2.toString(), is(calendarEvent1.toString()));
     }
 
