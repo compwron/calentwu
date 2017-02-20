@@ -63,8 +63,8 @@ public class CalendarEvent {
 
     private List<SessionType> sortSessionTypes(Stream<SessionType> sessionTypeStream) {
         return sessionTypeStream
-                    .sorted(Comparator.comparing(Enum::toString))
-                    .collect(Collectors.toList());
+                .sorted(Comparator.comparing(Enum::toString))
+                .collect(Collectors.toList());
     }
 
     private String[] splitPipeSeparatedChunk(String chunk) {
@@ -166,6 +166,6 @@ public class CalendarEvent {
     }
 
     public ValidityResult validityCheck() {
-        return null;
+        return new ValidityResult(true);
     }
 }

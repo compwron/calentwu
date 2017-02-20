@@ -6,6 +6,10 @@ import java.util.List;
 public class ValidityResult {
     private List<Error> errors = new ArrayList<>();
 
+    public ValidityResult(boolean isValid) {
+
+    }
+
     public boolean isValid() {
         return true;
     }

@@ -1,6 +1,5 @@
 package com.cmpwrn.calentwu;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalTime;
@@ -10,8 +9,8 @@ import static org.junit.Assert.assertThat;
 
 public class CalendarEventTest {
 
-    @Test @Ignore("TODO")
-    public void testValidityOfCalendarEventShouldHaveEqualStartEndDuration() {
+    @Test
+    public void validityOfCalendarEventShouldHaveEqualStartEndDuration() {
         CalendarEvent calendarEvent = new CalendarEventBuilder()
                 .withStartTime(LocalTime.of(9, 0))
                 .withEndTime(LocalTime.of(10, 30))
@@ -19,6 +18,18 @@ public class CalendarEventTest {
                 .build();
         assertThat(calendarEvent.validityCheck().isValid(), is(true));
         assertThat(calendarEvent.validityCheck().getErrors().size(), is(0));
+    }
+
+    @Test
+    public void calendarEventWithMismatchedStartAndEndTimesShouldBeInvalid() {
+        CalendarEvent calendarEvent = new CalendarEventBuilder()
+                .withStartTime(LocalTime.of(9, 0))
+                .withEndTime(LocalTime.of(10, 30))
+                .withDuration(1)
+                .build();
+        assertThat(calendarEvent.validityCheck().isValid(), is(false));
+        assertThat(calendarEvent.validityCheck().getErrors().size(), is(1));
+        assertThat(calendarEvent.validityCheck().getErrors().get(0).toString(), is("Start time 09:00 and end time 10:30 are not 1 minutes apart"));
     }
 
     @Test
