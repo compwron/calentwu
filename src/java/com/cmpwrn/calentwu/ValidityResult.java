@@ -4,17 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ValidityResult {
-    private List<Error> errors = new ArrayList<>();
+    private boolean isValid;
+    private List<CalendarError> errors = new ArrayList<>();
+
+    public ValidityResult(boolean isValid, CalendarError calendarError) {
+        this.isValid = isValid;
+        this.errors.add(calendarError);
+    }
 
     public ValidityResult(boolean isValid) {
-
+        this.isValid = isValid;
     }
 
     public boolean isValid() {
-        return true;
+        return isValid;
     }
 
-    public List<Error> getErrors() {
+    public List<CalendarError> getErrors() {
         return errors;
     }
 }

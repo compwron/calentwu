@@ -166,6 +166,11 @@ public class CalendarEvent {
     }
 
     public ValidityResult validityCheck() {
-        return new ValidityResult(true);
+//        TODO require this via interface?
+        if (startTime.get().plus(minutesDuration, MINUTES).equals(endTime.get())) {
+            return new ValidityResult(true);
+        }
+        CalendarError calendarError = new CalendarError("Start time " + startTime.get() + " and end time " + endTime.get() + " are not " + minutesDuration + " minutes apart");
+        return new ValidityResult(false, calendarError);
     }
 }
