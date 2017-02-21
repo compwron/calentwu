@@ -142,7 +142,6 @@ public class CalendarEvent {
 
     @Override
     public String toString() {
-//        "Feedback,9:00,90,https://example.com,dev/QA,Dev|Types of Testing,Linda|Anika";
         return sessionName + "," +
                 startTime.get().toString() + "," +
                 minutesDuration.toString() + "," +
